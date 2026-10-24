@@ -16,8 +16,8 @@ async function test(name: string, url: string) {
 }
 
 async function main() {
-  await test('Port 6543 (pgbouncer)', 'postgresql://postgres.nxlmoqjskcgcrovqntbn:sahaba085231@aws-0-eu-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true')
-  await test('Port 5432 (session)', 'postgresql://postgres.nxlmoqjskcgcrovqntbn:sahaba085231@aws-0-eu-west-2.pooler.supabase.com:5432/postgres')
+  await test('DATABASE_URL', process.env.DATABASE_URL)
+  await test('DIRECT_URL', process.env.DIRECT_URL)
 }
 
 main()

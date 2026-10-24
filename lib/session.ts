@@ -10,7 +10,7 @@ export interface AdminSessionData {
 }
 
 export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET || 'dev-session-secret-replace-in-production-abc123def456-iron-key-fallback',
+  password: process.env.SESSION_SECRET || 'fallback-local-development-secret-minimum-32-chars-long',
   cookieName: 'ww_admin_session',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production',
