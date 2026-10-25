@@ -11,6 +11,9 @@ export interface CharacterFallback {
   backgroundPath: string | null
   sortOrder: number
   isPublished: boolean
+  isComingSoon?: boolean
+  releaseVersion?: string | null
+  isFeatured?: boolean
   tags: string[]
   nameAr?: string | null
   descriptionAr?: string | null

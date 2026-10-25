@@ -122,6 +122,8 @@ export function createStoredCharacter(input: {
   description?: string | null
   sourceUrl?: string | null
   isPublished?: boolean
+  isComingSoon?: boolean
+  releaseVersion?: string | null
   isFeatured?: boolean
   tags?: string[]
   portraitPath?: string | null

@@ -9,7 +9,8 @@ import {
   Save, ArrowLeft, Loader2, Sparkles, Activity, Shield,
   Zap, Star, Layers, Users, Trash2, Plus, ExternalLink,
   ChevronDown, Image as ImageIcon, CheckCircle2,
-  RefreshCw, BarChart3, Swords, MoveUp, MoveDown, Package, ChevronRight, Upload
+  RefreshCw, BarChart3, Swords, MoveUp, MoveDown, Package, ChevronRight, Upload,
+  Lock
 } from 'lucide-react'
 import ImageUploadField from '@/components/admin/ImageUploadField'
 import ItemPickerModal, { DbItem } from '@/components/admin/ItemPickerModal'
@@ -130,6 +131,8 @@ interface CharacterData {
   portraitPath?: string | null
   backgroundPath?: string | null
   isPublished: boolean
+  isComingSoon?: boolean
+  releaseVersion?: string | null
   isFeatured: boolean
   tags: string[]
   stats?: StatsMatrix | any
