@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import Image from 'next/image'
@@ -101,36 +101,36 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
 
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || 'ظپط´ظ„طھ ط§ظ„ط¹ظ…ظ„ظٹط©')
+        throw new Error(data.error || 'فشلت العملية')
       }
 
       const saved = await res.json()
       if (editingWeapon) {
         setWeapons((prev) => prev.map((w) => (w.id === saved.id ? saved : w)))
-        toast.success('طھظ… طھط­ط¯ظٹط« ط§ظ„ط³ظ„ط§ط­ ط¨ظ†ط¬ط§ط­')
+        toast.success('تم تحديث السلاح بنجاح')
       } else {
         setWeapons((prev) => [saved, ...prev])
-        toast.success('طھظ…طھ ط¥ط¶ط§ظپط© ط§ظ„ط³ظ„ط§ط­ ط¨ظ†ط¬ط§ط­')
+        toast.success('تمت إضافة السلاح بنجاح')
       }
       setModalOpen(false)
     } catch (err: any) {
-      toast.error(err.message || 'ط­ط¯ط« ط®ط·ط£ ط£ط«ظ†ط§ط، ط§ظ„ط­ظپط¸')
+      toast.error(err.message || 'حدث خطأ أثناء الحفظ')
     } finally {
       setSaving(false)
     }
   }
 
   const handleDelete = async (w: Weapon) => {
-    if (!confirm(`ظ‡ظ„ ط£ظ†طھ ظ…طھط£ظƒط¯ ظ…ظ† ط­ط°ظپ ط§ظ„ط³ظ„ط§ط­ "${w.nameAr || w.name}"طں`)) return
+    if (!confirm(`هل أنت متأكد من حذف السلاح "${w.nameAr || w.name}"؟`)) return
 
     try {
       const res = await fetch(`/api/admin/weapons?id=${w.id}`, { method: 'DELETE' })
-      if (!res.ok) throw new Error('ظپط´ظ„ ط§ظ„ط­ط°ظپ')
+      if (!res.ok) throw new Error('فشل الحذف')
 
       setWeapons((prev) => prev.filter((item) => item.id !== w.id))
-      toast.success('طھظ… ط­ط°ظپ ط§ظ„ط³ظ„ط§ط­ ط¨ظ†ط¬ط§ط­')
+      toast.success('تم حذف السلاح بنجاح')
     } catch {
-      toast.error('ط­ط¯ط« ط®ط·ط£ ط£ط«ظ†ط§ط، ط§ظ„ط­ط°ظپ')
+      toast.error('حدث خطأ أثناء الحذف')
     }
   }
 
@@ -151,7 +151,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="ط§ط¨ط­ط« ط¨ط§ظ„ط§ط³ظ… ط£ظˆ ط§ظ„ظ†ظˆط¹..."
+            placeholder="ابحث بالاسم أو النوع..."
             className="w-full bg-[#040812] border border-white/10 rounded-xl pr-10 pl-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
           />
         </div>
@@ -161,7 +161,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
           className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black text-sm transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)]"
         >
           <Plus className="w-4 h-4" />
-          ط¥ط¶ط§ظپط© ط³ظ„ط§ط­ ط¬ط¯ظٹط¯
+          إضافة سلاح جديد
         </button>
       </div>
 
@@ -171,12 +171,12 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
           <table className="w-full text-right text-xs">
             <thead className="bg-white/5 border-b border-white/10 text-slate-400 uppercase font-black">
               <tr>
-                <th className="py-3 px-4">ط§ظ„ط³ظ„ط§ط­</th>
-                <th className="py-3 px-4">ط§ظ„ظ†ظˆط¹</th>
-                <th className="py-3 px-4">ط§ظ„ظ†ط¯ط±ط©</th>
-                <th className="py-3 px-4">ط§ظ„ظ‡ط¬ظˆظ… ط§ظ„ط£ط³ط§ط³ظٹ</th>
-                <th className="py-3 px-4">ط§ظ„ط­ط§ظ„ط©</th>
-                <th className="py-3 px-4 text-center">ط¥ط¬ط±ط§ط،ط§طھ</th>
+                <th className="py-3 px-4">السلاح</th>
+                <th className="py-3 px-4">النوع</th>
+                <th className="py-3 px-4">الندرة</th>
+                <th className="py-3 px-4">الهجوم الأساسي</th>
+                <th className="py-3 px-4">الحالة</th>
+                <th className="py-3 px-4 text-center">إجراءات</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -202,16 +202,16 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                     </div>
                   </td>
                   <td className="py-3 px-4 font-mono font-bold text-cyan-400">{w.weaponType}</td>
-                  <td className="py-3 px-4 font-bold text-amber-400">{'âک…'.repeat(w.stars)}</td>
-                  <td className="py-3 px-4 font-mono text-slate-300">{w.baseAtk || 'â€”'}</td>
+                  <td className="py-3 px-4 font-bold text-amber-400">{'★'.repeat(w.stars)}</td>
+                  <td className="py-3 px-4 font-mono text-slate-300">{w.baseAtk || '—'}</td>
                   <td className="py-3 px-4">
                     {w.isPublished ? (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                        <Check className="w-3 h-3" /> ظ…ظ†ط´ظˆط±
+                        <Check className="w-3 h-3" /> منشور
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 bg-white/5 px-2 py-0.5 rounded-full">
-                        ظ…ط³ظˆط¯ط©
+                        مسودة
                       </span>
                     )}
                   </td>
@@ -220,14 +220,14 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                       <button
                         onClick={() => openEditModal(w)}
                         className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
-                        title="طھط¹ط¯ظٹظ„"
+                        title="تعديل"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDelete(w)}
                         className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
-                        title="ط­ط°ظپ"
+                        title="حذف"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -252,13 +252,13 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
             </button>
 
             <h3 className="text-xl font-black text-white mb-6">
-              {editingWeapon ? 'طھط¹ط¯ظٹظ„ ط¨ظٹط§ظ†ط§طھ ط§ظ„ط³ظ„ط§ط­' : 'ط¥ط¶ط§ظپط© ط³ظ„ط§ط­ ط¬ط¯ظٹط¯ ط¥ظ„ظ‰ ط§ظ„ظ‚ط§ط¹ط¯ط©'}
+              {editingWeapon ? 'تعديل بيانات السلاح' : 'إضافة سلاح جديد إلى القاعدة'}
             </h3>
 
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-1">ط§ظ„ط§ط³ظ… ط¨ط§ظ„ط¥ظ†ط¬ظ„ظٹط²ظٹ *</label>
+                  <label className="block text-xs font-bold text-slate-400 mb-1">الاسم بالإنجليزي *</label>
                   <input
                     type="text"
                     required
@@ -268,7 +268,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-1">ط§ظ„ط§ط³ظ… ط¨ط§ظ„ط¹ط±ط¨ظٹ</label>
+                  <label className="block text-xs font-bold text-slate-400 mb-1">الاسم بالعربي</label>
                   <input
                     type="text"
                     value={formData.nameAr}
@@ -280,7 +280,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-1">ط§ظ„ظ…ط¹ط±ظپ (Slug) *</label>
+                  <label className="block text-xs font-bold text-slate-400 mb-1">المعرف (Slug) *</label>
                   <input
                     type="text"
                     required
@@ -290,7 +290,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-1">ظ†ظˆط¹ ط§ظ„ط³ظ„ط§ط­</label>
+                  <label className="block text-xs font-bold text-slate-400 mb-1">نوع السلاح</label>
                   <select
                     value={formData.weaponType}
                     onChange={(e) => setFormData({ ...formData, weaponType: e.target.value })}
@@ -304,33 +304,33 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 mb-1">ط§ظ„ظ†ط¬ظˆظ… (ط§ظ„ظ†ط¯ط±ط©)</label>
+                  <label className="block text-xs font-bold text-slate-400 mb-1">النجوم (الندرة)</label>
                   <select
                     value={formData.stars}
                     onChange={(e) => setFormData({ ...formData, stars: Number(e.target.value) })}
                     className="w-full bg-[#040812] border border-white/10 rounded-xl px-3 py-2 text-xs text-white"
                   >
-                    <option value={5}>5 ظ†ط¬ظˆظ…</option>
-                    <option value={4}>4 ظ†ط¬ظˆظ…</option>
-                    <option value={3}>3 ظ†ط¬ظˆظ…</option>
+                    <option value={5}>5 نجوم ★★★★★</option>
+                    <option value={4}>4 نجوم ★★★★</option>
+                    <option value={3}>3 نجوم ★★★</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <ImageUploadField
-                  label="ط£ظٹظ‚ظˆظ†ط© ط§ظ„ط³ظ„ط§ط­ (Weapon Icon)"
+                  label="أيقونة السلاح (Weapon Icon)"
                   value={formData.iconUrl || ''}
                   onChange={(url) => setFormData({ ...formData, iconUrl: url })}
                   folder="weapons"
                   type="icon"
                   placeholder="/images/weapons/weapon-name.webp"
-                  helperText="ط§ط®طھط± طµظˆط±ط© ط§ظ„ط³ظ„ط§ط­ ظ…ظ† ط¬ظ‡ط§ط²ظƒ (PNG, WebP, SVG)"
+                  helperText="اختر صورة السلاح من جهازك (PNG, WebP, SVG)"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">ط§ظ„ظˆطµظپ ط¨ط§ظ„ط¹ط±ط¨ظٹ</label>
+                <label className="block text-xs font-bold text-slate-400 mb-1">الوصف بالعربي</label>
                 <textarea
                   rows={3}
                   value={formData.descAr}
@@ -348,7 +348,7 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                   className="rounded bg-black border-white/10 text-cyan-500 focus:ring-0"
                 />
                 <label htmlFor="pub" className="text-xs font-bold text-slate-300">
-                  ظ†ط´ط± ط§ظ„ط³ظ„ط§ط­ ظپظˆط±ط§ظ‹ ظپظٹ ط§ظ„ظ…ظˆظ‚ط¹
+                  نشر السلاح فوراً في الموقع
                 </label>
               </div>
 
@@ -358,14 +358,14 @@ export default function WeaponsAdminClient({ initialWeapons }: { initialWeapons:
                   onClick={() => setModalOpen(false)}
                   className="px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-white text-xs font-bold"
                 >
-                  ط¥ظ„ط؛ط§ط،
+                  إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
                   className="px-6 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-black shadow-[0_0_15px_rgba(6,182,212,0.4)] disabled:opacity-50"
                 >
-                  {saving ? 'ط¬ط§ط±ظچ ط§ظ„ط­ظپط¸...' : 'ط­ظپط¸ ط§ظ„ط³ظ„ط§ط­'}
+                  {saving ? 'جارٍ الحفظ...' : 'حفظ السلاح'}
                 </button>
               </div>
             </form>
