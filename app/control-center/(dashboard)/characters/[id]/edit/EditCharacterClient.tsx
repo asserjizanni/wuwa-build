@@ -228,11 +228,16 @@ export default function EditCharacterClient({ characterId }: { characterId: stri
 
       // If teams is empty in DB but exists in fallback JSON
       let rawTeams = Array.isArray(char.teams) ? char.teams : (Array.isArray(char.teamComps) ? char.teamComps : [])
-      // Ensure every team has a valid members array to prevent crash on render
+      // Ensure every team has valid members/rotations arrays to prevent crash on render
       let teams = rawTeams.map((t: any) => ({
         ...t,
         members: Array.isArray(t.members) ? t.members : [],
-        rotations: Array.isArray(t.rotations) ? t.rotations : [],
+        rotations: Array.isArray(t.rotations)
+          ? t.rotations.map((r: any) => ({
+              ...r,
+              steps: Array.isArray(r.steps) ? r.steps : [],
+            }))
+          : [],
       }))
 
       setCharacter({
@@ -1557,7 +1562,7 @@ export default function EditCharacterClient({ characterId }: { characterId: stri
                         </div>
 
                         <div className="space-y-1.5">
-                          {rot.steps.map((st, sIdx) => (
+                          {(rot.steps || []).map((st, sIdx) => (
                             <div key={sIdx} className="flex items-center gap-2">
                               <input
                                 type="text"
