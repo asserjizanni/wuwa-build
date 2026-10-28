@@ -3,19 +3,19 @@ const path = require('path')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   serverExternalPackages: ['sharp'],
+  outputFileTracingRoot: path.join(__dirname),
+  outputFileTracingExcludes: {
+    '*': [
+      '**/.next/cache/**',
+      '**/node_modules/@swc/core*/**',
+      '**/node_modules/@esbuild/**',
+      // Exclude Windows temp paths from tracing
+      '**/AppData/Local/Temp/**',
+      '**/Temp/**',
+    ],
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
-    outputFileTracingRoot: path.join(__dirname),
-    outputFileTracingExcludes: {
-      '*': [
-        '**/.next/cache/**',
-        '**/node_modules/@swc/core*/**',
-        '**/node_modules/@esbuild/**',
-        // Exclude Windows temp paths from tracing
-        '**/AppData/Local/Temp/**',
-        '**/Temp/**',
-      ],
-    },
   },
   images: {
     remotePatterns: [
