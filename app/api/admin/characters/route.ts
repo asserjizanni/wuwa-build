@@ -70,6 +70,7 @@ export async function GET(request: NextRequest) {
           isFeatured: true,
           sortOrder: true,
           portraitPath: true,
+          iconUrl: true,
           createdAt: true,
           updatedAt: true,
         },
