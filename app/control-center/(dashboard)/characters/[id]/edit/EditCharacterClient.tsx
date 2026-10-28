@@ -227,7 +227,13 @@ export default function EditCharacterClient({ characterId }: { characterId: stri
       const char = data.character || {}
 
       // If teams is empty in DB but exists in fallback JSON
-      let teams = Array.isArray(char.teams) ? char.teams : (Array.isArray(char.teamComps) && char.teamComps[0]?.members ? char.teamComps : [])
+      let rawTeams = Array.isArray(char.teams) ? char.teams : (Array.isArray(char.teamComps) ? char.teamComps : [])
+      // Ensure every team has a valid members array to prevent crash on render
+      let teams = rawTeams.map((t: any) => ({
+        ...t,
+        members: Array.isArray(t.members) ? t.members : [],
+        rotations: Array.isArray(t.rotations) ? t.rotations : [],
+      }))
 
       setCharacter({
         ...char,
@@ -1409,7 +1415,7 @@ export default function EditCharacterClient({ characterId }: { characterId: stri
 
                   {/* 3 Character Slots */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {team.members.map((member, mIdx) => (
+                    {(team.members || []).map((member, mIdx) => (
                       <div key={mIdx} className="p-3.5 rounded-xl bg-zinc-900/80 border border-white/10 space-y-2">
                         <span className="text-[11px] font-bold text-cyan-400 block">الخانة #{mIdx + 1}</span>
                         {/* Character avatar + DB picker */}
